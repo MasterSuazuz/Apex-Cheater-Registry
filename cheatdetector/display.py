@@ -157,7 +157,8 @@ def _client_rect(hwnd: int) -> tuple[int, int, int, int] | None:
 def resolve_target(auto_detect: bool, monitor_index: int) -> CaptureTarget:
     monitors = list_monitors()
     if not monitors:
-        raise RuntimeError("Не найдено ни одного монитора")
+        from .i18n import t
+        raise RuntimeError(t("Не найдено ни одного монитора"))
     fallback = monitors[monitor_index] if 0 <= monitor_index < len(monitors) else monitors[0]
 
     if auto_detect:

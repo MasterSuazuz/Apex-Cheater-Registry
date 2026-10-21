@@ -110,7 +110,7 @@ class RecognitionSettings:
 
 @dataclass
 class Settings:
-    language: str = "ru"
+    language: str = "en"           # при первом запуске — английский
     capture: CaptureSettings = field(default_factory=CaptureSettings)
     recording: RecordingSettings = field(default_factory=RecordingSettings)
     audio: AudioSettings = field(default_factory=AudioSettings)

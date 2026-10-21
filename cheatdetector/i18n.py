@@ -7,12 +7,12 @@ from __future__ import annotations
 
 from .i18n_en import EN
 
-_lang = "ru"
+_lang = "en"
 
 
 def set_language(lang: str) -> None:
     global _lang
-    _lang = lang if lang in ("ru", "en") else "ru"
+    _lang = lang if lang in ("ru", "en") else "en"
 
 
 def language() -> str:

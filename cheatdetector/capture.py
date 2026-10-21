@@ -24,6 +24,7 @@ import numpy as np
 from .audio import AudioRecorder
 from .config import Settings
 from .display import CaptureTarget
+from .i18n import t
 
 SEGMENT_SECONDS = 2
 _NO_WINDOW = subprocess.CREATE_NO_WINDOW
@@ -113,7 +114,7 @@ class _DxcamSource(_FrameSource):
                 if int(out.hmonitor or 0) == target.monitor.handle:
                     device_idx, output_idx = d_i, o_i
         if device_idx is None:
-            raise RuntimeError("dxcam не нашёл этот монитор")
+            raise RuntimeError(t("dxcam не нашёл этот монитор"))
         self._cam = dxcam.create(device_idx=device_idx, output_idx=output_idx, output_color="BGR")
         self._cam.start(region=target.region_on_monitor, target_fps=fps, video_mode=True)
 
@@ -235,7 +236,7 @@ class CaptureEngine:
                 src.close()
                 if backend == "dxcam":
                     raise
-                self._on_status(f"DXGI недоступен ({exc}), переключаюсь на GDI")
+                self._on_status(t("DXGI недоступен, переключаюсь на GDI") + f" ({exc})")
         # GDI не успевает выдавать 60 к/с на 1080p, а нехватку кадров видео превратило бы в ускорение.
         self.fps = min(self.fps, 30)
         src = _MssSource()
@@ -273,7 +274,7 @@ class CaptureEngine:
             self.source_name = source.name
             first = source.read()
             if first is None:
-                raise RuntimeError("Не удалось получить кадр с экрана")
+                raise RuntimeError(t("Не удалось получить кадр с экрана"))
             in_h, in_w = first.shape[:2]
             self.out_size = output_size(self.target, self.settings.recording.resolution)
             self._proc = subprocess.Popen(self._ffmpeg_cmd(in_w, in_h), stdin=subprocess.PIPE,
@@ -281,8 +282,8 @@ class CaptureEngine:
             self.frames_written = 0
             self._clock.clear()
             self._start_audio()
-            self._on_status(f"Запись идёт: {in_w}×{in_h} → {self.out_size[0]}×{self.out_size[1]}, "
-                            f"{self.fps} к/с, {self.encoder.upper()}, {source.name}")
+            self._on_status(t("Запись идёт") + f": {in_w}×{in_h} → {self.out_size[0]}×{self.out_size[1]}, "
+                            f"{self.fps} {t('к/с')}, {self.encoder.upper()}, {source.name}")
             frame = first
             fps_t0, fps_n = time.perf_counter(), 0
             while not self._stop.is_set():
@@ -305,7 +306,7 @@ class CaptureEngine:
                 frame = source.read()
         except Exception as exc:
             self.last_error = str(exc)
-            self._on_status(f"Ошибка захвата: {exc}")
+            self._on_status(t("Ошибка захвата") + f": {exc}")
         finally:
             if source is not None:
                 source.close()
@@ -316,7 +317,7 @@ class CaptureEngine:
             self.actual_fps = 0.0
             self.latest_frame = None
             if not self.last_error:
-                self._on_status("Запись остановлена")
+                self._on_status(t("Запись остановлена"))
 
     def _start_audio(self) -> None:
         a = self.settings.audio
@@ -407,7 +408,7 @@ class CaptureEngine:
             frame_path = out_dir / f"{req.id}.jpg"
             cv2.imwrite(str(frame_path), req.frame, [cv2.IMWRITE_JPEG_QUALITY, 90])
         if not segs:
-            self._on_mark_done(MarkResult(req, None, frame_path, 0.0, "В буфере нет видео для этого момента"))
+            self._on_mark_done(MarkResult(req, None, frame_path, 0.0, t("В буфере нет видео для этого момента")))
             return
         list_file = out_dir / f"{req.id}.txt"
         list_file.write_text("".join(f"file '{s.as_posix()}'\n" for s in segs), encoding="utf-8")

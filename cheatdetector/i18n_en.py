@@ -259,4 +259,13 @@ EN = {
     'Обрезка: 1-й щелчок — начало [, 2-й — конец ], потом — обрезать. Скобки на полосе можно двигать.': 'Trim: 1st click sets the start [, 2nd the end ], then trim. You can drag the brackets on the bar.',
     'Поставь видео на конец нужного куска и нажми — поставится ]': 'Move to the end of the part you need and click to set ]',
     'Оставить только кусок между [ и ], остальное удалить из досье': 'Keep only the part between [ and ], delete the rest from the dossier',
+    'Макс. оценка': 'Top rating',
+    'Последняя встреча': 'Last seen',
+    'dxcam не нашёл этот монитор': 'dxcam could not find this monitor',
+    'DXGI недоступен, переключаюсь на GDI': 'DXGI unavailable, switching to GDI',
+    'Не удалось получить кадр с экрана': 'Could not capture a frame from the screen',
+    'Запись идёт': 'Recording',
+    'Ошибка захвата': 'Capture error',
+    'В буфере нет видео для этого момента': 'No video in the buffer for this moment',
+    'Не найдено ни одного монитора': 'No monitors found',
 }

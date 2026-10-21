@@ -84,8 +84,8 @@ Moments rated 4 or 5 go into the EA report text.
 
 ## Language
 
-The app is available in Russian and English. Change it in Settings → Language; the change applies
-after a restart.
+The app starts in English. To switch to Russian, use Settings → Language; the change applies after
+a restart.
 
 ## The .apexcase file
 
